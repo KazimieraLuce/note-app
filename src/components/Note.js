@@ -13,37 +13,43 @@ class Note extends React.Component {
 
   onTagSubmit(e) {
     e.preventDefault();
-    console.log(this.name.value);
+    const formData = {
+      name: this.name.value
+    };
+    this.props.submitTag(formData, this.props.note.id);
     this.props.closeTagForm();
   }
 
-  renderTagForm() {
-    if (!this.props.newTag) {
-      return(
-        <span>
-          Tag your note:
+  renderTagForm(note) {
+    if (note.id !== undefined) {
+      if (!this.props.newTag) {
+        return(
+          <span>
+            Tag your note:
 
-          <i 
-            className="tag-button material-icons"
-            onClick={() => this.props.showTagForm()}
-          >
-            add circle
-          </i>
-        </span>
-      );
-    } else {
-        return (
-          <form onSubmit={(e) => this.onTagSubmit(e)}>
-            <input 
-              className="tag-input"
-              type="text"
-              placeholder="Tag Name . . . "
-              ref={(input) => this.name = input}
-            />
-          </form>
+            <i 
+              className="tag-button material-icons"
+              onClick={() => this.props.showTagForm()}
+            >
+              add circle
+            </i>
+          </span>
         );
+      } else {
+          return (
+            <form onSubmit={(e) => this.onTagSubmit(e)}>
+              <input 
+                className="tag-input"
+                type="text"
+                placeholder="Tag Name . . . "
+                ref={(input) => this.name = input}
+              />
+            </form>
+          );
+        }
+      }
     }
-  };
+
 
   render() {
     const { note } = this.props;
@@ -68,7 +74,7 @@ class Note extends React.Component {
         </form>
         <div className="tag-container">
           <div className="tag-button-container">
-            {this.renderTagForm()}
+            {this.renderTagForm(note)}
           </div>
         </div>
       </div>
